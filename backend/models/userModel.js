@@ -63,7 +63,7 @@ const comparePassword = async (enteredPassword, hashedPassword) => {
 };
 
 
-const init = async () => {
+const initUsers = async () => {
   await createUsersTable();
 };
 
@@ -72,5 +72,5 @@ module.exports = {
   getUserByEmail,
   getUserById,
   comparePassword,
-  init,
+  initUsers,
 };

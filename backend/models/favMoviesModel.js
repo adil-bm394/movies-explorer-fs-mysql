@@ -1,41 +1,42 @@
 const pool = require("../config/database");
 
-const createFavoriteMoviesTable = async () => {
+const createUserFavoritesTable = async () => {
   const connection = await pool.getConnection();
   try {
     await connection.query(`
-            CREATE TABLE IF NOT EXISTS favorite_movies (
-                id INT AUTO_INCREMENT PRIMARY KEY,
-                user_id INT NOT NULL,
-                movie_id VARCHAR(20) NOT NULL,
-                FOREIGN KEY (user_id) REFERENCES users(id),
-                FOREIGN KEY (movie_id) REFERENCES movies(imdbID),
-                UNIQUE KEY unique_favorite (user_id, movie_id)
-            )
-        `);
+      CREATE TABLE IF NOT EXISTS user_favorites (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        user_id INT NOT NULL,
+        imdbID VARCHAR(20) NOT NULL,
+        FOREIGN KEY (user_id) REFERENCES users(id),
+        FOREIGN KEY (imdbID) REFERENCES movies(imdbID),
+        INDEX idx_user_id (user_id),
+        INDEX idx_imdbID (imdbID)
+      )
+    `);
   } finally {
     connection.release();
   }
 };
 
-const addFavoriteMovie = async (userId, movieId) => {
+const addFavoriteMovie = async (userId, imdbID) => {
   const connection = await pool.getConnection();
   try {
     await connection.query(
-      "INSERT INTO favorite_movies (user_id, movie_id) VALUES (?, ?)",
-      [userId, movieId]
+      "INSERT INTO user_favorites (user_id, imdbID) VALUES (?, ?)",
+      [userId, imdbID]
     );
   } finally {
     connection.release();
   }
 };
 
-const removeFavoriteMovie = async (userId, movieId) => {
+const removeFavoriteMovie = async (userId, imdbID) => {
   const connection = await pool.getConnection();
   try {
     await connection.query(
-      "DELETE FROM favorite_movies WHERE user_id = ? AND movie_id = ?",
-      [userId, movieId]
+      "DELETE FROM user_favorites WHERE user_id = ? AND imdbID = ?",
+      [userId, imdbID]
     );
   } finally {
     connection.release();
@@ -47,10 +48,10 @@ const getFavoriteMoviesByUserId = async (userId) => {
   try {
     const [rows] = await connection.query(
       `
-            SELECT m.* FROM favorite_movies f
-            JOIN movies m ON f.movie_id = m.imdbID
-            WHERE f.user_id = ?
-        `,
+      SELECT m.* FROM user_favorites uf
+      JOIN movies m ON uf.imdbID = m.imdbID
+      WHERE uf.user_id = ?
+    `,
       [userId]
     );
     return rows;
@@ -59,13 +60,13 @@ const getFavoriteMoviesByUserId = async (userId) => {
   }
 };
 
-const init = async () => {
-  await createFavoriteMoviesTable();
+const initFavorites = async () => {
+  await createUserFavoritesTable();
 };
 
 module.exports = {
   addFavoriteMovie,
   removeFavoriteMovie,
   getFavoriteMoviesByUserId,
-  init,
+  initFavorites,
 };

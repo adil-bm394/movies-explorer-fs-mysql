@@ -4,11 +4,11 @@ const colors = require("colors");
 const cors = require("cors");
 const morgan= require('morgan');
 const pool = require("./config/database");
-//const { init: initMovies } = require("./models/moviesModel");
-const { init: initFavorites } = require("./models/favMoviesModel");
-const { init: initComments } = require("./models/commentModel");
-const { init: initRatings } = require("./models/ratingModel");
-const { init: initUsers } = require("./models/userModel");
+//const { initMovies } = require("./models/moviesModel");
+const { initFavorites } = require("./models/favMoviesModel");
+const { initComments } = require("./models/commentModel");
+const { initRatings } = require("./models/ratingModel");
+const { initUsers } = require("./models/userModel");
 const serverConfig = require("./config/serverConfig");
 
 
@@ -26,7 +26,7 @@ app.use(cors());
 
 // Initialize tables
 const initializeTables = async () => {
- // await initMovies();
+  //await initMovies();
   await initFavorites();
   await initComments();
   await initRatings();

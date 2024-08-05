@@ -99,7 +99,7 @@ const getFavoritesController = async (req, res) => {
     }
 
     const userId = req.user.id;
-    const user = await UserModel.findById(userId);
+    const user = await UserModel.getUserById(userId);
 
     if (!user) {
       return res.status(statusCodes.NOT_FOUND).json({

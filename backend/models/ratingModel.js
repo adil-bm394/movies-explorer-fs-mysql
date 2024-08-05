@@ -6,14 +6,14 @@ const createRatingsTable = async () => {
     await connection.query(`
       CREATE TABLE IF NOT EXISTS ratings (
         id INT AUTO_INCREMENT PRIMARY KEY,
-        movie_id VARCHAR(20) NOT NULL,
+        imdbID VARCHAR(20) NOT NULL,
         user_id INT NOT NULL,
         rating INT DEFAULT 0,
         user_name VARCHAR(255) NOT NULL,
         FOREIGN KEY (user_id) REFERENCES users(id),
-        FOREIGN KEY (movie_id) REFERENCES movies(imdbID),
-        INDEX (user_id),
-        INDEX (movie_id)
+        FOREIGN KEY (imdbID) REFERENCES movies(imdbID),
+         INDEX idx_user_id (user_id),
+        INDEX idx_imdbID (imdbID)
       )
     `);
   } finally {
@@ -76,7 +76,7 @@ const getRatingsByMovieId = async (movieId) => {
   }
 };
 
-const init = async () => {
+const initRatings = async () => {
   await createRatingsTable();
 };
 
@@ -85,5 +85,5 @@ module.exports = {
   updateRating,
   findRatingByUserAndMovie,
   getRatingsByMovieId,
-  init,
+  initRatings,
 };
