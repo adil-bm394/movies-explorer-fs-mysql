@@ -45,19 +45,20 @@ const removeFavoriteMovie = async (userId, imdbID) => {
 
 const getFavoriteMoviesByUserId = async (userId) => {
   const connection = await pool.getConnection();
-  try {
-    const [rows] = await connection.query(
-      `
-      SELECT m.* FROM user_favorites uf
+    try {
+      const [rows] = await connection.query(
+        `
+      SELECT m.*
+      FROM user_favorites uf
       JOIN movies m ON uf.imdbID = m.imdbID
       WHERE uf.user_id = ?
-    `,
-      [userId]
-    );
-    return rows;
-  } finally {
-    connection.release();
-  }
+      `,
+        [userId]
+      );
+      return rows;
+    } finally {
+      connection.release();
+    }
 };
 
 const initFavorites = async () => {

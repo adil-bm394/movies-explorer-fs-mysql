@@ -9,7 +9,7 @@ const addFavoriteController = async (req, res) => {
     const { imdbID } = req.body;
     const userId = req.user.id;
 
-    const movie = await MoviesModel.getMovieByImdbID({ imdbID });
+    const movie = await MoviesModel.getMovieByImdbID( imdbID );
 
     if (!movie) {
       return res.status(statusCodes.NOT_FOUND).json({
@@ -26,10 +26,10 @@ const addFavoriteController = async (req, res) => {
       });
     }
 
-    const existingFavorite = await favoriteMoviesModel.findOne({
-      userId,
-      movieId: movie.imdbID,
-    });
+    const existingFavorite =
+      await favoriteMoviesModel.getFavoriteMoviesByUserId(userId);
+
+      console.log("xcghjkl", existingFavorite);
     if (existingFavorite) {
       return res.status(statusCodes.BAD_REQUEST).json({
         success: "false",
@@ -65,7 +65,7 @@ const removeFavoriteController = async (req, res) => {
       });
     }
 
-    const movie = await MoviesModel.getMovieByImdbID({ imdbID });
+    const movie = await MoviesModel.getMovieByImdbID(imdbID );
 
     if (!movie) {
       return res.status(statusCodes.NOT_FOUND).json({
@@ -108,9 +108,7 @@ const getFavoritesController = async (req, res) => {
       });
     }
 
-    const favoriteMovies = await favoriteMoviesModel.getFavoriteMoviesByUserId(
-      userId
-    );
+    const favoriteMovies = await favoriteMoviesModel.getFavoriteMoviesByUserId(userId);
 
     res.status(statusCodes.OK).json({
       success: true,

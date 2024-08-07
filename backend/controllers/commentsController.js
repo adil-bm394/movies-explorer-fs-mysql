@@ -10,7 +10,7 @@ const addCommentController = async (req, res) => {
     const { commentText, rating } = req.body;
     const userId = req.user.id;
 
-    const movie = await MoviesModel.findOneByImdbID(imdbID);
+    const movie = await MoviesModel.getMovieByImdbID(imdbID);
 
     if (!movie) {
       return res.status(statusCodes.NOT_FOUND).json({
@@ -51,7 +51,7 @@ const fetchCommentsController = async (req, res) => {
   try {
     const { imdbID } = req.params;
 
-    const movie = await MoviesModel.findOneByImdbID(imdbID);
+    const movie = await MoviesModel.getMovieByImdbID(imdbID);
 
     if (!movie) {
       return res.status(statusCodes.NOT_FOUND).json({

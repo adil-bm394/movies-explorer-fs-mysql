@@ -18,6 +18,8 @@ const messages = {
   UPDATE_SUCCESS: "Update successful.",
   RATING_SAVED_SUCCESSFULLY: "Rating saved successfully.",
   RATINGS_FETCHED_SUCCESSFULLY: "Ratings fetched successfully.",
+  ADD_FAVORITE_SUCCESS: "Successfully added movies in favMovies",
+  REMOVE_FAVORITE_SUCCESS:"Successfully Remove from favMovies",
 };
 
 module.exports = messages;

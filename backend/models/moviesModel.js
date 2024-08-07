@@ -40,6 +40,7 @@ const pool = require("../config/database");
 
 const getMovieByImdbID = async (imdbID) => {
   const connection = await pool.getConnection();
+
   try {
     const [rows] = await connection.query(
       "SELECT * FROM movies WHERE imdbID = ?",
