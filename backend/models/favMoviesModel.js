@@ -55,6 +55,7 @@ const getFavoriteMoviesByUserId = async (userId) => {
       `,
         [userId]
       );
+      console.log("rows from model",rows[0]);
       return rows;
     } finally {
       connection.release();
