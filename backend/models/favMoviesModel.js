@@ -20,6 +20,7 @@ const createUserFavoritesTable = async () => {
 };
 
 const addFavoriteMovie = async (userId, imdbID) => {
+
   const connection = await pool.getConnection();
   try {
     await connection.query(
@@ -45,21 +46,22 @@ const removeFavoriteMovie = async (userId, imdbID) => {
 
 const getFavoriteMoviesByUserId = async (userId) => {
   const connection = await pool.getConnection();
-    try {
-      const [rows] = await connection.query(
-        `
-      SELECT m.*
-      FROM user_favorites uf
-      JOIN movies m ON uf.imdbID = m.imdbID
-      WHERE uf.user_id = ?
-      `,
-        [userId]
-      );
-      console.log("rows from model",rows[0]);
-      return rows;
-    } finally {
-      connection.release();
-    }
+   try {
+     const [rows] = await connection.query(
+       `
+            SELECT m.*
+            FROM user_favorites uf
+            JOIN movies m ON uf.imdbID = m.imdbID
+            WHERE uf.user_id = ?
+        `,
+       [userId]
+     );
+     return rows;
+     console.log("rows from model", rows[0]);
+     return rows;
+   } finally {
+     connection.release();
+   }
 };
 
 const initFavorites = async () => {

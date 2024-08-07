@@ -120,7 +120,7 @@ export const fetchRatings = createAsyncThunk<
       `http://localhost:8000/api/v1/fetchRatings/${movieId}`
     );
     
-    //console.log("response.data.ratings", response.data);
+    console.log("response.data.ratings from backend", response.data);
 
     return { movieId, ratings: response.data.ratings };
   } catch (error) {

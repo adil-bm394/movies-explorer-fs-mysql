@@ -27,12 +27,12 @@ const addFavoriteController = async (req, res) => {
     }
 
     const existingFavorite =
-      await favoriteMoviesModel.getFavoriteMoviesByUserId(imdbID);
-       console.log("existingFavorite", existingFavorite);
+      await favoriteMoviesModel.getFavoriteMoviesByUserId(userId);
+
        const isAlreadyFavorite = existingFavorite.some(
          (favorite) => favorite.imdbID === imdbID
        );
-      console.log("isAlreadyFavorite", isAlreadyFavorite);
+
     if (isAlreadyFavorite) {
       return res.status(statusCodes.BAD_REQUEST).json({
         success: "false",
@@ -68,8 +68,8 @@ const removeFavoriteController = async (req, res) => {
       });
     }
     const existingFavorite =
-      await favoriteMoviesModel.getFavoriteMoviesByUserId(imdbID);
-      
+      await favoriteMoviesModel.getFavoriteMoviesByUserId(userId);
+
     const isNotFavorite = existingFavorite.some(
       (favorite) => favorite.imdbID === imdbID
     );

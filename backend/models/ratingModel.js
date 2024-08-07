@@ -22,10 +22,11 @@ const createRatingsTable = async () => {
 };
 
 const addRating = async (movieId, userId, rating, userName) => {
+  
   const connection = await pool.getConnection();
   try {
     await connection.query(
-      "INSERT INTO ratings (movie_id, user_id, rating, user_name) VALUES (?, ?, ?, ?)",
+      "INSERT INTO ratings (imdbID, user_id, rating, user_name) VALUES (?, ?, ?, ?)",
       [movieId, userId, rating, userName]
     );
   } finally {
@@ -34,10 +35,11 @@ const addRating = async (movieId, userId, rating, userName) => {
 };
 
 const updateRating = async (userId, movieId, rating, userName) => {
+
   const connection = await pool.getConnection();
   try {
     await connection.query(
-      "UPDATE ratings SET rating = ?, user_name = ? WHERE user_id = ? AND movie_id = ?",
+      "UPDATE ratings SET rating = ?, user_name = ? WHERE user_id = ? AND imdbID = ?",
       [rating, userName, userId, movieId]
     );
   } finally {
@@ -49,7 +51,7 @@ const findRatingByUserAndMovie = async (userId, movieId) => {
   const connection = await pool.getConnection();
   try {
     const [rows] = await connection.query(
-      "SELECT * FROM ratings WHERE user_id = ? AND movie_id = ?",
+      "SELECT * FROM ratings WHERE user_id = ? AND imdbID = ?",
       [userId, movieId]
     );
     return rows.length > 0 ? rows[0] : null;
@@ -63,10 +65,10 @@ const getRatingsByMovieId = async (movieId) => {
   try {
     const [rows] = await connection.query(
       `
-      SELECT r.id, r.movie_id, r.user_id, r.rating, r.user_name, u.name AS user_name
+      SELECT r.id, r.imdbID, r.user_id, r.rating, r.user_name, u.name AS user_name
       FROM ratings r
       JOIN users u ON r.user_id = u.id
-      WHERE r.movie_id = ?
+      WHERE r.imdbID = ?
     `,
       [movieId]
     );

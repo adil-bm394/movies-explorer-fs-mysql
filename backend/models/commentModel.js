@@ -9,7 +9,6 @@ const createCommentsTable = async () => {
                 movie_id VARCHAR(20) NOT NULL,
                 user_id INT NOT NULL,
                 comment TEXT NOT NULL,
-                rating INT DEFAULT 0,
                 FOREIGN KEY (user_id) REFERENCES users(id),
                 FOREIGN KEY (movie_id) REFERENCES movies(imdbID),
                 INDEX idx_user_id (user_id),
@@ -21,12 +20,12 @@ const createCommentsTable = async () => {
   }
 };
 
-const addComment = async (movieId, userId, commentText, rating) => {
+const addComment = async (movieId, userId, commentText) => {
   const connection = await pool.getConnection();
   try {
     await connection.query(
-      "INSERT INTO comments (movie_id, user_id, comment) VALUES (?, ?, ?, ?)",
-      [movieId, userId, commentText, rating]
+      "INSERT INTO comments (movie_id, user_id, comment) VALUES (?, ?, ?)",
+      [movieId, userId, commentText]
     );
   } finally {
     connection.release();

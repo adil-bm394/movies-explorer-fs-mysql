@@ -3,20 +3,25 @@ const statusCodes = require("../utils/statusCodes");
 const messages = require("../utils/messages");
 
 const addRatingController = async (req, res) => {
-  try {
-    const { movieId, rating, userName } = req.body;
-    const userId = req.user.id;
 
-    const existingRating = await RatingModel.findRatingByUserAndMovie(
-      userId,
-      movieId
+    const { movieId, rating} = req.body;
+    const user=req.user;
+       const userId = user.id;
+       const  userName = user.name;
+    
+    try{
+       const existingRating = await RatingModel.findRatingByUserAndMovie(
+         userId,
+         movieId
     );
-
+  
     if (existingRating) {
       await RatingModel.updateRating(userId, movieId, rating, userName);
       return res.status(statusCodes.OK).json({
         success: true,
         message: messages.UPDATE_SUCCESS,
+        rating: rating,
+        userName:userName
       });
 
     } else {
@@ -24,6 +29,8 @@ const addRatingController = async (req, res) => {
       return res.status(statusCodes.CREATED).json({
         success: true,
         message: messages.RATING_SAVED_SUCCESSFULLY,
+        rating: rating,
+        userName: userName,
       });
     }
 
@@ -46,7 +53,7 @@ const fetchRatingsController = async (req, res) => {
     res.status(statusCodes.OK).json({
       success: true,
       message: messages.RATINGS_FETCHED_SUCCESSFULLY,
-      ratings,
+      ratings: ratings,
     });
   } catch (error) {
     console.log("Error fetching ratings:", error.message);

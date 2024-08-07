@@ -7,7 +7,7 @@ const CommentModel = require("../models/commentModel");
 const addCommentController = async (req, res) => {
   try {
     const { imdbID } = req.params;
-    const { commentText, rating } = req.body;
+    const { commentText } = req.body;
     const userId = req.user.id;
 
     const movie = await MoviesModel.getMovieByImdbID(imdbID);
@@ -26,7 +26,7 @@ const addCommentController = async (req, res) => {
         message: "User Not Found",
       });
     }
-    await CommentModel.addComment(imdbID, userId, commentText, rating);
+    await CommentModel.addComment(imdbID, userId, commentText);
 
     res.status(statusCodes.OK).json({
       success: true,
