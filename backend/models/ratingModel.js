@@ -9,7 +9,7 @@ const createRatingsTable = async () => {
         imdbID VARCHAR(20) NOT NULL,
         user_id INT NOT NULL,
         rating INT DEFAULT 0,
-        user_name VARCHAR(255) NOT NULL,
+        userName VARCHAR(255) NOT NULL,
         FOREIGN KEY (user_id) REFERENCES users(id),
         FOREIGN KEY (imdbID) REFERENCES movies(imdbID),
          INDEX idx_user_id (user_id),
@@ -22,11 +22,11 @@ const createRatingsTable = async () => {
 };
 
 const addRating = async (movieId, userId, rating, userName) => {
-  
+
   const connection = await pool.getConnection();
   try {
     await connection.query(
-      "INSERT INTO ratings (imdbID, user_id, rating, user_name) VALUES (?, ?, ?, ?)",
+      "INSERT INTO ratings (imdbID, user_id, rating, userName) VALUES (?, ?, ?, ?)",
       [movieId, userId, rating, userName]
     );
   } finally {
@@ -39,7 +39,7 @@ const updateRating = async (userId, movieId, rating, userName) => {
   const connection = await pool.getConnection();
   try {
     await connection.query(
-      "UPDATE ratings SET rating = ?, user_name = ? WHERE user_id = ? AND imdbID = ?",
+      "UPDATE ratings SET rating = ?, userName = ? WHERE user_id = ? AND imdbID = ?",
       [rating, userName, userId, movieId]
     );
   } finally {
@@ -65,7 +65,7 @@ const getRatingsByMovieId = async (movieId) => {
   try {
     const [rows] = await connection.query(
       `
-      SELECT r.id, r.imdbID, r.user_id, r.rating, r.user_name, u.name AS user_name
+      SELECT r.id, r.imdbID, r.user_id, r.rating, r.userName, u.name AS user_name
       FROM ratings r
       JOIN users u ON r.user_id = u.id
       WHERE r.imdbID = ?

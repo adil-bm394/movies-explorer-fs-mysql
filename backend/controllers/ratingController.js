@@ -53,7 +53,7 @@ const fetchRatingsController = async (req, res) => {
     res.status(statusCodes.OK).json({
       success: true,
       message: messages.RATINGS_FETCHED_SUCCESSFULLY,
-      ratings: ratings,
+       ratings,
     });
   } catch (error) {
     console.log("Error fetching ratings:", error.message);
