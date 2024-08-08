@@ -18,11 +18,7 @@ const FavoriteButton: React.FC<FavoriteButtonProps> = ({ movie }) => {
   const favorites = useSelector(
     (state: RootState) => state.favorites.favorites
   );
-  console.log("favorites",favorites);
-  console.log("movies",movie);
-
   const isFavorite = favorites.some((fav) => fav.imdbID === movie.imdbID);
-  console.log("isFavorites Button",isFavorite);
 
   const handleFavoriteClick = () => {
     if (isLoggedIn) {

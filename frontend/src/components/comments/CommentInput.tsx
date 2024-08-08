@@ -24,6 +24,7 @@ const CommentInput: React.FC<CommentInputProps> = ({
   const handleFormSubmit = (data: CommentFormInputs) => {
     if (isLoggedIn) {
       console.log("data.comment",data.comment);
+        console.log("data ", data);
       onSubmit(data.comment);
       reset();
     }
